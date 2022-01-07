@@ -1,6 +1,6 @@
 /*
 Convert Chicago Board of Elections results CSV download
-to a compact json representation suitble for the web 
+to a compact json representation suitable for the web 
 HJD 2022-01-07 
 */
 const fs = require('fs');
