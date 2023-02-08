@@ -7,7 +7,7 @@ const fs = require('fs');
 const readline = require('readline');
 
 const interface = readline.createInterface({
-    input: fs.createReadStream('dataexport.csv')
+    input: fs.createReadStream('data/dataexport.csv')
 });
 
 var ward = 0;
@@ -27,7 +27,7 @@ interface.on('line', (line) => {
         wards[ward][precinct] = {v: votes, d: democratic, r: republican};
     }
 }).on('close', () => {
-    fs.writeFile('dataexport.json', JSON.stringify(wards), (err) => {
+    fs.writeFile('data/dataexport.json', JSON.stringify(wards), (err) => {
         if (err) {
             throw err;
         }  
