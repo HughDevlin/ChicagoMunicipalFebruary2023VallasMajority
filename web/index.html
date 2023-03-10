@@ -3,19 +3,16 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>2020 Presidential Election by Chicago Precincts</title>
-		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-		<link rel="stylesheet" href="ChicagoPrecincts.css" />
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-		<script src="ChicagoPrecinctFeatures.js"></script>
-		<script src="ChicagoPrecinctResults.js"></script>
-		<script src="ChicagoPrecincts.js"></script>
+		<title>February 2023 Chicago Municipal Election by Precinct</title>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" ></script>
+		<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin="" ></script>
+		<link rel="stylesheet" href="chloropleth.css" />
+		<script src="app.mjs" type="module" ></script>
 	</head>
 	<body>
-		<h1>2020 Presidential Elections by Chicago Precincts</h1>
+		<h1>February 2023 Chicago Municipal Election by Precinct</h1>
+		<h2>Vallas majority precincts</h1>
 		<div id="map"></div>
+		<script src="main.mjs" type="module" ></script>
 	</body>
-	<script>
-		ChicagoPrecincts("map", precinctFeatures, ChicagoPrecinctResults);
-	</script>
-</html>
+ </html>
