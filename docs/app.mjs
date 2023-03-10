@@ -8,7 +8,7 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 
 	const percent = (a, b) => b == 0 ? 0 : 100.0 * a / b;
 
-	const bold = (s) => '<b>' + s + '</b>'
+	const bold = (s) => '<b>' + s + '</b>';
 
 	extendedProperties.get = function(ward, precinct) {
 		return this[ward - 1][precinct - 1];  // zero-based
@@ -95,7 +95,9 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 	const legend = L.control({ position: 'topright' });
 	legend.onAdd = function () {
 
-		colorSquare = (color) => '<i style="background:' + color + '"></i>';
+		function colorSquare(color) {
+			return '<i style="background: ' + color + '"></i>';
+		};
 
 		const div = L.DomUtil.create('div', 'info legend');
 		div.innerHTML = pct + ' Vallas' + br // legend title
