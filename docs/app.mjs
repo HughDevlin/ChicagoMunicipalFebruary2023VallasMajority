@@ -6,6 +6,11 @@
 
 export function app(id, wards, precincts, extendedProperties, palette) {
 
+	const br = '<br>';
+	const pct = '&percnt;';
+	const gt = '&gt;';
+	const copyright = '&copy;';
+	
 	const percent = (a, b) => b == 0 ? 0 : 100.0 * a / b;
 
 	const bold = (s) => '<b>' + s + '</b>';
@@ -14,11 +19,6 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 		return this[ward - 1][precinct - 1];  // zero-based
 	};
 
-	const br = '<br>';
-	const pct = '&percnt;';
-	const gt = '&gt;';
-	const copyright = '&copy;';
-	
 	const map = L.map(id);
 	const center = [41.8781, -87.6298]; // Chicago lat long
 	map.setView(center, 0);
@@ -61,19 +61,20 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 
 			function propertiesList(props) {
 				const keys = Object.keys(props); keys[0]
-				var returnValue = keys[0] + ': ' + props[keys[0]] + br; // Votes
+				var list = keys[0] + ': ' + props[keys[0]] + br; // Votes
 				Object.keys(props).slice(1).forEach((key) => {
 					const percentage = percent(props[key], props[keys[0]]);
-					returnValue += key + ': ' + props[key] + " (" + percentage.toFixed(1) + pct + ')' + br;
+					list += key + ': ' + props[key] + " (" + percentage.toFixed(1) + pct + ')' + br;
 				});
-				return returnValue;
+				return list;
 			};
 
 			// Bind pop-up
 			const ward = Math.trunc(feature.properties.ward)
 			const precinct = Math.trunc(feature.properties.precinct)
 			const props = extendedProperties.get(ward, precinct);
-			const content = bold('Ward: ' + ward + br + 'Precinct: ' + precinct) + br + propertiesList(props);
+			const content = bold('Ward: ' + ward + br + 'Precinct: ' + precinct) + br + 
+				propertiesList(props);
 			layer.bindPopup(content, { minWidth: 330 });
 
 			// Add hover behavior
@@ -85,6 +86,7 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 					this.closePopup();
 				}
 			});
+
 		}
 
 	});
