@@ -20,10 +20,10 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 	};
 
 	const map = L.map(id);
-	const center = [41.8781, -87.6298]; // Chicago lat long
-	map.setView(center, 0);
 
 	// Add basemap
+	const center = [41.8781, -87.6298]; // Chicago lat long
+	map.setView(center, 0);
 	const osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png ';
 	const attribution =  ' <a href="https://chicagoelections.gov/">Chicagp Board of Election Commissioners</a> ' +
 		' ' + copyright + ' ' +
@@ -47,20 +47,20 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 		smoothFactor: 0.8,
 
 		style: function (feature) {
-			const returnValue = { className: 'precincts' };
+			const style = { className: 'precincts' };
 			// color precincts
-			const ward = Math.trunc(feature.properties.ward)
-			const precinct = Math.trunc(feature.properties.precinct)
+			const ward = Math.trunc(feature.properties.ward);
+			const precinct = Math.trunc(feature.properties.precinct);
 			const props = extendedProperties.get(ward, precinct);
 			const percentage = percent(props['PAUL VALLAS'], props['Votes']);
-			returnValue.fillColor = palette.get(percentage);
-			return returnValue;
+			style.fillColor = palette.get(percentage);
+			return style;
 		},
 
 		onEachFeature: function (feature, layer) {
 
 			function propertiesList(props) {
-				const keys = Object.keys(props); keys[0]
+				const keys = Object.keys(props);
 				var list = keys[0] + ': ' + props[keys[0]] + br; // Votes
 				Object.keys(props).slice(1).forEach((key) => {
 					const percentage = percent(props[key], props[keys[0]]);
@@ -70,8 +70,8 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 			};
 
 			// Bind pop-up
-			const ward = Math.trunc(feature.properties.ward)
-			const precinct = Math.trunc(feature.properties.precinct)
+			const ward = Math.trunc(feature.properties.ward);
+			const precinct = Math.trunc(feature.properties.precinct);
 			const props = extendedProperties.get(ward, precinct);
 			const content = bold('Ward: ' + ward + br + 'Precinct: ' + precinct) + br + 
 				propertiesList(props);

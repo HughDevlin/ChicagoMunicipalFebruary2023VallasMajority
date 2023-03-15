@@ -1,4 +1,4 @@
-import {palette} from '../web/palette.mjs'
+import {palette} from '../docs/palette.mjs'
 import assert from 'node:assert'
 
 describe('palette', function () {
