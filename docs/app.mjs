@@ -47,7 +47,8 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 		smoothFactor: 0.8,
 
 		style: function (feature) {
-			const style = { className: 'precincts' };
+			// css overrides leaflet
+			const style = { className: 'precincts', fillOpacity: 0.5 };
 			// color precincts
 			const ward = Math.trunc(feature.properties.ward);
 			const precinct = Math.trunc(feature.properties.precinct);
@@ -77,16 +78,17 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 				propertiesList(props);
 			layer.bindPopup(content, { minWidth: 330 });
 
-			// Add hover behavior
+			// Add hover behavior: "dim" slightly
 			layer.on({
-				mouseover: function (e) {
-					this.openPopup();
+				mouseover: function () {
+					// this.openPopup();
+					this.setStyle({fillOpacity: 0.3});
 				},
-				mouseout: function (e) {
-					this.closePopup();
+				mouseout: function () {
+					// this.closePopup();
+					precinctsLayer.resetStyle();
 				}
 			});
-
 		}
 
 	});
