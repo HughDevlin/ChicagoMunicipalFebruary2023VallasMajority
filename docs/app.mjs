@@ -6,14 +6,14 @@
 
 export function app(id, wards, precincts, extendedProperties, palette) {
 
-	const br = '<br>';
+	const br = '<br />';
 	const pct = '&percnt;';
 	const gt = '&gt;';
 	const copyright = '&copy;';
 	
 	const percent = (a, b) => b == 0 ? 0 : 100.0 * a / b;
 
-	const bold = (s) => '<b>' + s + '</b>';
+	const heading = (s) => '<h4>' + s + '</h4>';
 
 	extendedProperties.get = function(ward, precinct) {
 		return this[ward - 1][precinct - 1];  // zero-based
@@ -73,7 +73,7 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 			const ward = Math.trunc(feature.properties.ward);
 			const precinct = Math.trunc(feature.properties.precinct);
 			const props = extendedProperties.get(ward, precinct);
-			const content = bold('Ward: ' + ward + br + 'Precinct: ' + precinct) + br + 
+			const content = heading('Ward: ' + ward + ', ' + 'Precinct: ' + precinct) + 
 				propertiesList(props);
 			layer.bindPopup(content, { minWidth: 330 });
 
@@ -102,7 +102,7 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 		};
 
 		const div = L.DomUtil.create('div', 'info legend');
-		div.innerHTML = pct + ' Vallas' + br // legend title
+		div.innerHTML = heading(pct + ' Vallas') // legend title
 		// generate a labeled colored square for each interval
 		for (var i = 1; i < palette.length - 1; i++) {
 			div.innerHTML += colorSquare(palette[i]) + palette.breaks[i - 1] + '&ndash;' + palette.breaks[i] + pct + br;
