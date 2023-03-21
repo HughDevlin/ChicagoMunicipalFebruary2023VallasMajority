@@ -4,6 +4,11 @@
  * 2023-03-01 HJD
  */
 
+// export to facilitate testing
+export function extendedPropertiesAccessor(ward, precinct){
+	return this[ward - 1][precinct - 1];  // zero-based 2d array
+};	
+
 export function app(id, wards, precincts, extendedProperties, palette) {
 
 	const br = '<br />';
@@ -15,9 +20,7 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 
 	const heading = (s) => '<h4>' + s + '</h4>';
 
-	extendedProperties.get = function(ward, precinct) {
-		return this[ward - 1][precinct - 1];  // zero-based
-	};
+	extendedProperties.get = extendedPropertiesAccessor;
 
 	const map = L.map(id);
 
