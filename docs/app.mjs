@@ -22,23 +22,21 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 
 	extendedProperties.get = extendedPropertiesAccessor;
 
-	const map = L.map(id);
-
-	// tooltips array
-	map.tooltips = function() {
+	// all tooltips as an array
+	function tooltips() {
 		const tooltips = [];
 		this.eachLayer(function(layer) {
-			if (layer.getTooltip) {
-				const toolTip = layer.getTooltip();
-				if (toolTip) {
-					tooltips.push(toolTip);
-				}
-			}
+			const toolTip = layer.getTooltip();
+			if (toolTip) {
+				tooltips.push(toolTip);
+			};
 		}); // end each layer handler
 		return tooltips;
 	}; // end function tooltips
 
 	// Add basemap
+	const map = L.map(id);
+	map.tooltips = tooltips;
 	const center = [41.8781, -87.6298]; // Chicago lat long
 	map.setView(center, 0);
 	const osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png ';
@@ -51,10 +49,6 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 		attribution: attribution
 	});
 	map.addLayer(osm);
-
-	// Add wards
-	const wardsLayer = L.geoJSON(wards, {style: {className: 'wards'}});
-	map.addLayer(wardsLayer);
 
 	// Add precincts
 	const precinctsLayer = L.geoJSON(precincts, {
@@ -118,6 +112,10 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 	map.tooltips().forEach((tooltip) =>	map.closeTooltip(tooltip));
 	map.fitBounds(precinctsLayer.getBounds());
 
+	// Add wards
+	const wardsLayer = L.geoJSON(wards, {style: {className: 'wards'}});
+	map.addLayer(wardsLayer);
+
 	// Add legend    
 	const legend = L.control({position: 'topright'});
 	legend.onAdd = function () {
@@ -138,8 +136,8 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 	legend.addTo(map);
 
 	var previousZoomLevel = map.getZoom();
-	map.on('zoomend', function(e){
-		// higher is in, lower is out
+	map.on('zoomend', function(){
+		// higher is in (smaller scale), lower is out (larger scale)
 		const ZOOM_THRESHOLD = 15;
 		const zoomLevel = map.getZoom();
 		if((zoomLevel < ZOOM_THRESHOLD) && (previousZoomLevel >= ZOOM_THRESHOLD)) {
