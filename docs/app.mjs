@@ -59,8 +59,8 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 			// css overrides leaflet
 			const style = {className: 'precincts', fillOpacity: 0.5};
 			// color precincts
-			const ward = Math.trunc(feature.properties.ward);
-			const precinct = Math.trunc(feature.properties.precinct);
+			const ward = feature.properties.ward;
+			const precinct = feature.properties.precinct;
 			const props = extendedProperties.get(ward, precinct);
 			const percentage = percent(props['PAUL VALLAS'], props['Votes']);
 			style.fillColor = palette.get(percentage);
@@ -69,8 +69,8 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 
 		onEachFeature: function (feature, layer) {
 
-			const ward = Math.trunc(feature.properties.ward);
-			const precinct = Math.trunc(feature.properties.precinct);
+			const ward = feature.properties.ward;
+			const precinct = feature.properties.precinct;
 			const props = extendedProperties.get(ward, precinct);
 
 			function propertiesList(props) {
