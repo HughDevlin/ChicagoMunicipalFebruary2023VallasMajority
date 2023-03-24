@@ -4,12 +4,7 @@
  * 2023-03-01 HJD
  */
 
-// export to facilitate testing
-export function extendedPropertiesAccessor(ward, precinct){
-	return this[ward - 1][precinct - 1];  // zero-based 2d array
-};	
-
-export function app(id, wards, precincts, extendedProperties, palette) {
+export function app(id, wards, precincts, palette) {
 
 	const br = '<br />';
 	const pct = '&percnt;';
@@ -17,10 +12,7 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 	const copyright = '&copy;';
 	
 	const percent = (a, b) => b == 0 ? 0 : 100.0 * a / b;
-
 	const heading = (s) => '<h4>' + s + '</h4>';
-
-	extendedProperties.get = extendedPropertiesAccessor;
 
 	// all tooltips as an array
 	function tooltips() {
@@ -59,10 +51,8 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 			// css overrides leaflet
 			const style = {className: 'precincts', fillOpacity: 0.5};
 			// color precincts
-			const ward = feature.properties.ward;
-			const precinct = feature.properties.precinct;
-			const props = extendedProperties.get(ward, precinct);
-			const percentage = percent(props['PAUL VALLAS'], props['Votes']);
+			const cboe = feature.properties.cboe;
+			const percentage = percent(cboe['PAUL VALLAS'], cboe['Votes']);
 			style.fillColor = palette.get(percentage);
 			return style;
 		},
@@ -71,8 +61,9 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 
 			const ward = feature.properties.ward;
 			const precinct = feature.properties.precinct;
-			const props = extendedProperties.get(ward, precinct);
+			const cboe = feature.properties.cboe;
 
+			// object properties to html list
 			function propertiesList(props) {
 				const keys = Object.keys(props);
 				var list = keys[0] + ': ' + props[keys[0]] + br; // Votes
@@ -85,7 +76,7 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 
 			// Bind pop-up
 			const content = heading('Ward: ' + ward + ', Precinct: ' + precinct) + 
-				propertiesList(props);
+				propertiesList(cboe);
 			layer.bindPopup(content, {minWidth: 330});
 
 			// Add hover behavior: "dim" slightly
@@ -98,7 +89,7 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 				}
 			});
 
-			// Add tooltips to label precincts
+			// Add tooltips as labels for precincts
 			const precinctLabel = 'Ward ' + ward + br + 'Precinct ' + precinct;
 			layer.bindTooltip(precinctLabel, {
 				permanent: true,
@@ -135,6 +126,7 @@ export function app(id, wards, precincts, extendedProperties, palette) {
 	}; // end legend onAdd handler
 	legend.addTo(map);
 
+	// Add zoom behavior, labels on zoom in
 	var previousZoomLevel = map.getZoom();
 	map.on('zoomend', function(){
 		// higher is in (smaller scale), lower is out (larger scale)

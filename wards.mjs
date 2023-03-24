@@ -10,7 +10,7 @@ const inString = fs.readFileSync(inFile);
 const featureCollection = JSON.parse(inString);
 const features = featureCollection.features;
 features.forEach((feature) => {
-    // convert ward and precinct from string to int
+    // convert ward from string to int
     feature.properties.ward = Math.trunc(feature.properties.ward);
     // unused properties
     delete feature.properties.ward_id;
